@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div id="wrapper">
+  <div id="columns sports">
+    {% for sportsEntry in sportsEntries %}
+    <div class="pin">
+      <h4> {{sportsEntry.title}} </h4>
+      <img src="{{sportsEntry.image}}" />
+      <p>{{sportsEntry.text}}</p>
+    </div>
+  </div>
+
+  <div id="columns business">
+    {% for businessEntry in businessEntries %}
+    <div class="pin">
+      <h4> {{businessEntry.title}} </h4>
+      <img src="{{businessEntry.image}}" />
+      <p>{{businessEntry.text}}</p>
+    </div>
+  </div>
+
+  <div id="columns politics">
+    {% for politicsEntry in politicsEntries %}
+    <div class="pin">
+      <h4> {{politicsEntry.title}} </h4>
+      <img src="{{politicsEntry.image}}" />
+      <p>{{politicsEntry.text}}</p>
+    </div>
+  </div>
+
+  <div id="columns entertainment">
+    {% for entertainmentEntry in entertainmentEntries %}
+    <div class="pin">
+      <h4> {{entertainmentEntry.title}} </h4>
+      <img src="{{entertainmentEntry.image}}" />
+      <p>{{entertainmentEntry.text}}</p>
+    </div>
+  </div>
+
+  <div id="columns health">
+    {% for healthEntry in healthEntries %}
+    <div class="pin">
+      <h4> {{healthEntry.title}} </h4>
+      <img src="{{healthEntry.image}}" />
+      <p>{{healthEntry.text}}</p>
+    </div>
+  </div>
+</div>
+
+
