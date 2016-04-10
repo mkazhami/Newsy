@@ -9,6 +9,7 @@
       <img src="{{sportsEntry.image}}" />
       <p>{{sportsEntry.text}}</p>
     </div>
+    {% endfor %}
   </div>
 
   <div id="columns business">
@@ -18,6 +19,7 @@
       <img src="{{businessEntry.image}}" />
       <p>{{businessEntry.text}}</p>
     </div>
+    {% endfor %}
   </div>
 
   <div id="columns politics">
@@ -27,6 +29,7 @@
       <img src="{{politicsEntry.image}}" />
       <p>{{politicsEntry.text}}</p>
     </div>
+    {% endfor %}
   </div>
 
   <div id="columns entertainment">
@@ -36,6 +39,7 @@
       <img src="{{entertainmentEntry.image}}" />
       <p>{{entertainmentEntry.text}}</p>
     </div>
+    {% endfor %}
   </div>
 
   <div id="columns health">
@@ -45,7 +49,10 @@
       <img src="{{healthEntry.image}}" />
       <p>{{healthEntry.text}}</p>
     </div>
+    {% endfor %}
   </div>
 </div>
+
+{% endblock %}
 
 
