@@ -18,9 +18,9 @@ app.config.from_object(__name__) # TODO: move to a separate file
 
 def connect_db():
     """Connects to the specific database."""
-    rv = sqlite3.connect(app.config['DATABASE'])
+    #rv = sqlite3.connect(app.config['DATABASE'])
     #rv.row_factory = sqlite3.Row
-    return rv
+    return sqlite3.connect(app.config['DATABASE'])
 
 
 def init_db():
@@ -29,10 +29,10 @@ def init_db():
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
-
-        db.execute('insert into entries (title, text) value (?, ?)',
+        # test values
+        db.execute('insert into entries (title, text) values (?, ?)', \
                     ["basketball", "lebron"])
-        db.execute('insert into entries (title, text) value (?, ?)',
+        db.execute('insert into entries (title, text) values (?, ?)', \
                     ["basketball", "kobe"])
         db.commit()
 
@@ -50,9 +50,11 @@ def teardown_request(exception):
 @app.route('/')
 def show_entries():
     cur = g.db.execute('select title, text from entries order by id desc')
-    entries = cur.fetchall()
-    sportsEntries = entries # for testing
-    return render_template('overview.html', entries=entries)
+    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    # using the same list for each header for now
+    return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
+                                            politicsEntries=entries, entertainmentEntries=entries, \
+                                            healthEntries=entries)
 
 def add_entry():
     #g.db.execute('insert into entries (title, text) values (?, ?)',
@@ -65,4 +67,5 @@ def add_entry():
 
 
 if __name__ == '__main__':
-    app.run()
+    init_db()
+    app.run(debug=True)
