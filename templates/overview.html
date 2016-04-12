@@ -2,7 +2,7 @@
 {% block body %}
 
 <div id="wrapper">
-  <div id="columns sports">
+  <div class="columns sports">
     {% for sportsEntry in sportsEntries %}
     <div class="pin">
       <h4> {{sportsEntry.title}} </h4>
@@ -12,7 +12,7 @@
     {% endfor %}
   </div>
 
-  <div id="columns business">
+  <div class="columns business">
     {% for businessEntry in businessEntries %}
     <div class="pin">
       <h4> {{businessEntry.title}} </h4>
@@ -22,7 +22,7 @@
     {% endfor %}
   </div>
 
-  <div id="columns politics">
+  <div class="columns politics">
     {% for politicsEntry in politicsEntries %}
     <div class="pin">
       <h4> {{politicsEntry.title}} </h4>
@@ -32,7 +32,7 @@
     {% endfor %}
   </div>
 
-  <div id="columns entertainment">
+  <div class="columns entertainment">
     {% for entertainmentEntry in entertainmentEntries %}
     <div class="pin">
       <h4> {{entertainmentEntry.title}} </h4>
@@ -42,7 +42,7 @@
     {% endfor %}
   </div>
 
-  <div id="columns health">
+  <div class="columns health">
     {% for healthEntry in healthEntries %}
     <div class="pin">
       <h4> {{healthEntry.title}} </h4>
