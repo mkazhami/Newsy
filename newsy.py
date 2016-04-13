@@ -3,7 +3,7 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from contextlib import closing
-
+import reddit_api
 
 app = Flask(__name__)
 
@@ -49,8 +49,10 @@ def teardown_request(exception):
 
 @app.route('/')
 def show_entries():
-    cur = g.db.execute('select title, text from entries order by id desc')
-    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    #cur = g.db.execute('select title, text from entries order by id desc')
+    #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    urls, titles, texts = reddit_api.get_subreddit_link_summaries('worldnews', 5)
+    entries = [dict(title=titles[i], text=texts[i]) for i in range(len(texts))]
     # using the same list for each header for now
     return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
                                             politicsEntries=entries, entertainmentEntries=entries, \
