@@ -35,6 +35,8 @@ body {
 	background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
 	opacity: 1;
 	width: 200px;
+	max-height: 500px;
+	overflow-y: scroll;
 
 	-webkit-transition: all .2s ease;
 	-moz-transition: all .2s ease;
