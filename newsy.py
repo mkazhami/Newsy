@@ -3,7 +3,8 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from contextlib import closing
-import reddit_api
+import reddit_api, google_news
+import article_parse
 
 app = Flask(__name__)
 
@@ -29,12 +30,6 @@ def init_db():
         with app.open_resource('schema.sql', mode='r') as f:
             db.cursor().executescript(f.read())
         db.commit()
-        # test values
-        db.execute('insert into entries (title, text) values (?, ?)', \
-                    ["basketball", "lebron"])
-        db.execute('insert into entries (title, text) values (?, ?)', \
-                    ["basketball", "kobe"])
-        db.commit()
 
 @app.before_request
 def before_request():
@@ -51,8 +46,34 @@ def teardown_request(exception):
 def show_entries():
     #cur = g.db.execute('select title, text from entries order by id desc')
     #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
-    urls, titles, texts = reddit_api.get_subreddit_link_summaries('worldnews', 5)
-    entries = [dict(title=titles[i], text=texts[i]) for i in range(len(texts))]
+    urls = reddit_api.get_subreddit_links('worldnews', 5)
+    urls += google_news.get_google_news_article_links('world')
+
+    urls = urls[:20] # limit the number of links for testing
+    # TODO: remove
+
+    summaries = []
+
+    remove_indices = []
+    count = 0
+    for url in urls:
+        count += 1
+        text = article_parse.get_article_text(url)
+        if len(text) < 50:
+            remove_indices.append(count - 1)
+            continue
+        summary_list = article_parse.get_summary(text)
+
+        summary = ""
+        for l in summary_list:
+            summary += l + "\n"
+
+        summaries.append(summary)
+
+    for i in reversed(remove_indices):
+        del urls[i]
+
+    entries = [dict(title=urls[i], text=summaries[i]) for i in range(len(urls))]
     # using the same list for each header for now
     return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
                                             politicsEntries=entries, entertainmentEntries=entries, \
