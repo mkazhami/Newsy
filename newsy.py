@@ -16,6 +16,7 @@ PASSWORD='default'
 app.config.from_object(__name__) # TODO: move to a separate file
 #app.config.from_envvar('NEWSY_SETTINGS', silent=True)
 
+entries = []
 
 def connect_db():
     """Connects to the specific database."""
@@ -46,6 +47,24 @@ def teardown_request(exception):
 def show_entries():
     #cur = g.db.execute('select title, text from entries order by id desc')
     #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    
+    populate_entries()
+
+    # using the same list for each header for now
+    return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
+                                            politicsEntries=entries, entertainmentEntries=entries, \
+                                            healthEntries=entries)
+
+def add_entry():
+    #g.db.execute('insert into entries (title, text) values (?, ?)',
+    #           [request.form['title'], request.form['text']])
+    #g.db.commit()
+    #flash('New entry was successfully posted')
+    #return redirect(url_for('show_entries'))
+    flash("New entry added")
+
+
+def populate_entries():
     urls = reddit_api.get_subreddit_links('worldnews', 5)
     urls += google_news.get_google_news_article_links('world')
 
@@ -74,19 +93,6 @@ def show_entries():
         del urls[i]
 
     entries = [dict(title=urls[i], text=summaries[i]) for i in range(len(urls))]
-    # using the same list for each header for now
-    return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
-                                            politicsEntries=entries, entertainmentEntries=entries, \
-                                            healthEntries=entries)
-
-def add_entry():
-    #g.db.execute('insert into entries (title, text) values (?, ?)',
-    #           [request.form['title'], request.form['text']])
-    #g.db.commit()
-    #flash('New entry was successfully posted')
-    #return redirect(url_for('show_entries'))
-    flash("New entry added")
-
 
 
 if __name__ == '__main__':
