@@ -2,55 +2,71 @@
 {% block body %}
 
 <div id="wrapper">
-  <div class="columns sports">
-    {% for sportsEntry in sportsEntries %}
-    <div class="pin">
-      <h4> {{sportsEntry.title}} </h4>
-      <!-- <img src="{{sportsEntry.image}}" /> -->
-      <p>{{sportsEntry.text}}</p>
+
+  <div class="Sports">
+    <h1> Sports </h1>
+    <div class="columns sports">
+      {% for sportsEntry in sportsEntries %}
+      <div class="pin">
+        <h4> {{sportsEntry.title}} </h4>
+        <!-- <img src="{{sportsEntry.image}}" /> -->
+        <p>{{sportsEntry.text}}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 
-  <div class="columns business">
-    {% for businessEntry in businessEntries %}
-    <div class="pin">
-      <h4> {{businessEntry.title}} </h4>
-      <!-- <img src="{{businessEntry.image}}" /> -->
-      <p>{{businessEntry.text}}</p>
+  <div class="business">
+    <h1> Business </h1>
+    <div class="columns">
+      {% for businessEntry in businessEntries %}
+      <div class="pin">
+        <h4> {{businessEntry.title}} </h4>
+        <!-- <img src="{{businessEntry.image}}" /> -->
+        <p>{{businessEntry.text}}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+  </div>  
+
+  <div class="politics">
+    <h1> Politics </h1>
+    <div class="columns">
+      {% for politicsEntry in politicsEntries %}
+      <div class="pin">
+        <h4> {{politicsEntry.title}} </h4>
+        <!-- <img src="{{politicsEntry.image}}" /> -->
+        <p>{{politicsEntry.text}}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
 
-  <div class="columns politics">
-    {% for politicsEntry in politicsEntries %}
-    <div class="pin">
-      <h4> {{politicsEntry.title}} </h4>
-      <!-- <img src="{{politicsEntry.image}}" /> -->
-      <p>{{politicsEntry.text}}</p>
+  <div class="entertainment">
+    <h1> Entertainment </h1>
+    <div class="columns">
+      {% for entertainmentEntry in entertainmentEntries %}
+      <div class="pin">
+        <h4> {{entertainmentEntry.title}} </h4>
+        <!-- <img src="{{entertainmentEntry.image}}" /> -->
+        <p>{{entertainmentEntry.text}}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 
-  <div class="columns entertainment">
-    {% for entertainmentEntry in entertainmentEntries %}
-    <div class="pin">
-      <h4> {{entertainmentEntry.title}} </h4>
-      <!-- <img src="{{entertainmentEntry.image}}" /> -->
-      <p>{{entertainmentEntry.text}}</p>
+  <div class="health">
+    <h1> Health </h1>
+    <div class="columns">
+      {% for healthEntry in healthEntries %}
+      <div class="pin">
+        <h4> {{healthEntry.title}} </h4>
+        <!-- <img src="{{healthEntry.image}}" /> -->
+        <p>{{healthEntry.text}}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
-
-  <div class="columns health">
-    {% for healthEntry in healthEntries %}
-    <div class="pin">
-      <h4> {{healthEntry.title}} </h4>
-      <!-- <img src="{{healthEntry.image}}" /> -->
-      <p>{{healthEntry.text}}</p>
-    </div>
-    {% endfor %}
-  </div>
+  </div>  
 </div>
 
 {% endblock %}
