@@ -9,6 +9,7 @@
       {% for sportsEntry in sportsEntries %}
       <div class="pin">
         <h4> {{sportsEntry.title}} </h4>
+        <h6> <a href="#"> {{sportsEntry.url}} </a> </h6>
         <!-- <img src="{{sportsEntry.image}}" /> -->
         <p>{{sportsEntry.text}}</p>
       </div>
@@ -22,6 +23,7 @@
       {% for businessEntry in businessEntries %}
       <div class="pin">
         <h4> {{businessEntry.title}} </h4>
+        <h6> <a href="#"> {{businessEntry.url}} </a> </h6>
         <!-- <img src="{{businessEntry.image}}" /> -->
         <p>{{businessEntry.text}}</p>
       </div>
@@ -29,14 +31,15 @@
     </div>
   </div>  
 
-  <div class="politics">
-    <h1> Politics </h1>
+  <div class="world">
+    <h1> World </h1>
     <div class="columns">
-      {% for politicsEntry in politicsEntries %}
+      {% for worldEntry in worldEntries %}
       <div class="pin">
-        <h4> {{politicsEntry.title}} </h4>
-        <!-- <img src="{{politicsEntry.image}}" /> -->
-        <p>{{politicsEntry.text}}</p>
+        <h4> {{worldEntry.title}} </h4>
+        <h6> <a href="#"> {{worldEntry.url}} </a> </h6>
+        <!-- <img src="{{worldEntry.image}}" /> -->
+        <p>{{worldEntry.text}}</p>
       </div>
       {% endfor %}
     </div>
@@ -48,6 +51,7 @@
       {% for entertainmentEntry in entertainmentEntries %}
       <div class="pin">
         <h4> {{entertainmentEntry.title}} </h4>
+        <h6> <a href="#"> {{entertainmentEntry.url}} </a> </h6>
         <!-- <img src="{{entertainmentEntry.image}}" /> -->
         <p>{{entertainmentEntry.text}}</p>
       </div>
@@ -61,6 +65,7 @@
       {% for healthEntry in healthEntries %}
       <div class="pin">
         <h4> {{healthEntry.title}} </h4>
+        <h6> <a href="#"> {{healthEntry.url}} </a> </h6>
         <!-- <img src="{{healthEntry.image}}" /> -->
         <p>{{healthEntry.text}}</p>
       </div>

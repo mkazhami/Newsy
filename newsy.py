@@ -3,26 +3,22 @@ from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from contextlib import closing
-import reddit_api, google_news
+from google_news import *
+from reddit_api import *
 import article_parse
 
 
-def populate_entries():
-    urls = reddit_api.get_subreddit_links('worldnews', 5)
-    urls += google_news.get_google_news_article_links('world')
-
-    urls = urls[:5] # limit the number of links for testing
-    # TODO: remove
-
-    print str(urls)
-
+def summarize_urls(urls):
     summaries = []
-
+    titles = []
     remove_indices = []
     count = 0
+
+    urls = urls[:5] #artificially limited TODO: remove
+
     for url in urls:
         count += 1
-        text = article_parse.get_article_text(url)
+        text, title = article_parse.get_article_text(url)
         if len(text) < 50:
             remove_indices.append(count - 1)
             continue
@@ -33,15 +29,27 @@ def populate_entries():
             summary += l + "\n"
 
         summaries.append(summary)
+        titles.append(title)
 
     for i in reversed(remove_indices):
         del urls[i]
 
-    return [dict(title=urls[i], text=summaries[i]) for i in range(len(urls))]
+    return [dict(title=titles[i], url=urls[i], text=summaries[i]) for i in range(len(summaries))]
 
 
+def populate_entries():
+    entries = dict()
+    entries['world'] = summarize_urls(get_subreddit_links('worldnews', 5)) + summarize_urls(get_google_news_article_links('world'))
+    entries['sports'] = summarize_urls(get_google_news_article_links('sports'))
+    entries['health'] = summarize_urls(get_google_news_article_links('health'))
+    entries['business'] = summarize_urls(get_google_news_article_links('business'))
+    entries['entertainment'] = summarize_urls(get_google_news_article_links('entertainment'))
 
+    return entries
+
+ 
 entries = populate_entries()
+print(str(entries))
 
 app = Flask(__name__)
 
@@ -84,22 +92,14 @@ def show_entries():
     #entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
 
     # using the same list for each header for now
-    return render_template('overview.html', sportsEntries=entries, businessEntries=entries, \
-                                            politicsEntries=entries, entertainmentEntries=entries, \
-                                            healthEntries=entries)
-
-def add_entry():
-    #g.db.execute('insert into entries (title, text) values (?, ?)',
-    #           [request.form['title'], request.form['text']])
-    #g.db.commit()
-    #flash('New entry was successfully posted')
-    #return redirect(url_for('show_entries'))
-    flash("New entry added")
+    return render_template('overview.html', sportsEntries=entries['sports'], businessEntries=entries['business'], \
+                                            worldEntries=entries['world'], entertainmentEntries=entries['entertainment'], \
+                                            healthEntries=entries['health'])
 
 
 
 
 
 if __name__ == '__main__':
-    init_db()
+    #init_db()
     app.run(debug=True)

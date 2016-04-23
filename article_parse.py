@@ -14,13 +14,13 @@ g = Goose()
 
 def get_article_text(url):
 	try:
-		return g.extract(url=url).cleaned_text
+		extracted = g.extract(url=url)
+		return extracted.cleaned_text, extracted.title
 	except Exception as e:
 		print(str(e))
-		raise e
 		print("failed to extract from " + url)
 
-	return ""
+	return "", ""
 
 def get_summary(text, max_sentences=5):
 	parser = PlaintextParser.from_string(text, Tokenizer("english"))
