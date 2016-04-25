@@ -2,6 +2,9 @@
 <title>Newsy</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="static/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='application.js') }}"></script>
+
 
 <div class=page>
   <nav class="navbar navbar-default">
@@ -10,12 +13,11 @@
 	      <a class="navbar-brand" href="#">Newsy</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-	      <li class="active"><a href="#">Home</a></li>
-	      <li><a href="#">Sports</a></li>
-	      <li><a href="#">Business</a></li> 
-	      <li><a href="#">World</a></li> 
-	      <li><a href="#">Entertainment</a></li> 
-	      <li><a href="#">Health</a></li> 
+	      <li><a id="sports" href="#">Sports</a></li>
+	      <li><a id="business" href="#">Business</a></li> 
+	      <li><a id="world" href="#">World</a></li> 
+	      <li><a id="entertainment" href="#">Entertainment</a></li> 
+	      <li><a id="health" href="#">Health</a></li> 
 	    </ul>
 	  </div>
 	</nav>

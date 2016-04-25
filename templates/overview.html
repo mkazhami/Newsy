@@ -2,16 +2,16 @@
 {% block body %}
 
 <div id="wrapper">
-
-  <div class="Sports">
+  <div class="sports">
     <h1> Sports </h1>
-    <div class="columns sports">
+    <div class="columns">
       {% for sportsEntry in sportsEntries %}
       <div class="pin">
-        <h4> {{sportsEntry.title}} </h4>
-        <h6> <a href="#"> {{sportsEntry.url}} </a> </h6>
-        <!-- <img src="{{sportsEntry.image}}" /> -->
-        <p>{{sportsEntry.text}}</p>
+        <a href={{sportsEntry.url}} > 
+          <h4> {{sportsEntry.title}} </h4>
+          <!-- <img src="{{sportsEntry.image}}" /> -->
+          <p>{{sportsEntry.text}}</p>
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -22,10 +22,11 @@
     <div class="columns">
       {% for businessEntry in businessEntries %}
       <div class="pin">
-        <h4> {{businessEntry.title}} </h4>
-        <h6> <a href="#"> {{businessEntry.url}} </a> </h6>
-        <!-- <img src="{{businessEntry.image}}" /> -->
-        <p>{{businessEntry.text}}</p>
+        <a href={{businessEntry.url}}> 
+          <h4> {{businessEntry.title}} </h4>
+          <!-- <img src="{{businessEntry.image}}" /> -->
+          <p>{{businessEntry.text}}</p>
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -36,10 +37,11 @@
     <div class="columns">
       {% for worldEntry in worldEntries %}
       <div class="pin">
-        <h4> {{worldEntry.title}} </h4>
-        <h6> <a href="#"> {{worldEntry.url}} </a> </h6>
-        <!-- <img src="{{worldEntry.image}}" /> -->
-        <p>{{worldEntry.text}}</p>
+        <a href={{worldEntry.url}}>
+          <h4> {{worldEntry.title}} </h4>
+          <!-- <img src="{{worldEntry.image}}" /> -->
+          <p>{{worldEntry.text}}</p>
+        </a>  
       </div>
       {% endfor %}
     </div>
@@ -50,10 +52,11 @@
     <div class="columns">
       {% for entertainmentEntry in entertainmentEntries %}
       <div class="pin">
-        <h4> {{entertainmentEntry.title}} </h4>
-        <h6> <a href="#"> {{entertainmentEntry.url}} </a> </h6>
-        <!-- <img src="{{entertainmentEntry.image}}" /> -->
-        <p>{{entertainmentEntry.text}}</p>
+        <a href= {{entertainmentEntry.url}}>
+          <h4> {{entertainmentEntry.title}} </h4>
+          <!-- <img src="{{entertainmentEntry.image}}" /> -->
+          <p>{{entertainmentEntry.text}}</p>
+        </a>  
       </div>
       {% endfor %}
     </div>
@@ -64,10 +67,11 @@
     <div class="columns">
       {% for healthEntry in healthEntries %}
       <div class="pin">
-        <h4> {{healthEntry.title}} </h4>
-        <h6> <a href="#"> {{healthEntry.url}} </a> </h6>
-        <!-- <img src="{{healthEntry.image}}" /> -->
-        <p>{{healthEntry.text}}</p>
+        <a href={{healthEntry.url}}>
+          <h4> {{healthEntry.title}} </h4>
+          <!-- <img src="{{healthEntry.image}}" /> -->
+          <p>{{healthEntry.text}}</p>
+        </a>
       </div>
       {% endfor %}
     </div>
