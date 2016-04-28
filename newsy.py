@@ -7,12 +7,15 @@ from google_news import *
 from reddit_api import *
 import article_parse
 
-
 def summarize_urls(urls):
     summaries = []
     titles = []
     remove_indices = []
     count = 0
+
+    urls = urls[:2]
+
+    keywords = []
 
     for url in urls:
         count += 1
@@ -28,6 +31,11 @@ def summarize_urls(urls):
 
         summaries.append(summary)
         titles.append(title)
+
+        keywords += article_parse.get_keywords(text)
+
+    keywords = sorted(keywords, key=lambda x: x[1])
+    print keywords[-len(keywords)*int(3/4):]
 
     for i in reversed(remove_indices):
         del urls[i]

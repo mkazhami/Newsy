@@ -10,6 +10,8 @@ from difflib import SequenceMatcher
 
 from goose import Goose
 
+from word_comparison import *
+
 g = Goose()
 
 def get_article_text(url):
@@ -43,19 +45,44 @@ def get_keywords(text):
 		if len(line[0]) > 4:
 			resultList.append(line)	
 
-	resultList = resultList[len(resultList) - 10:]	
+	resultList = resultList[-10:]	
 
-	def similar(a, b):
-	    return SequenceMatcher(None, a, b).ratio()	
+	#def similar(a, b):
+	#    return SequenceMatcher(None, a, b).ratio()	
 
-
-	for s1 in resultList:
-		for s2 in resultList:
-			if s1[0] != s2[0] and similar(s1[0], s2[0]) > 0.7:
-				resultList.remove(s2)
+	removeList = []
 
 	for result in resultList:
-		print(result)
+		if word_importance(result[0]) == 0:
+			removeList.append(result)
+
+	for word in removeList:
+		resultList.remove(word)
+
+	removeList = []
+
+	for s1 in resultList:
+		if s1 in removeList:
+			continue
+
+		for s2 in resultList:
+			if s2 in removeList:
+				continue
+
+			if s1[0] != s2[0] and compare_words(s1[0], s2[0]) >= 0.9:
+				importance1 = word_importance(s1[0])
+				importance2 = word_importance(s2[0])
+				if importance1 == importance2:
+					if len(s1[0]) > len(s2[0]):
+						removeList.append(s2)
+					else:
+						removeList.append(s1)
+				elif importance1 > importance2:
+					removeList.append(s2)
+				else:
+					removeList.append(s1)
+
+	return resultList
 
 
 
