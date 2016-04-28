@@ -9,18 +9,19 @@ import article_parse
 
 def summarize_urls(urls):
     summaries = []
+    keywords = []
     titles = []
     remove_indices = []
     count = 0
 
-    urls = urls[:2]
+    urls = urls[:5]
 
     keywords = []
 
     for url in urls:
         count += 1
         text, title = article_parse.get_article_text(url)
-        if len(text) < 50:
+        if len(text) < 250: # want the article to have substance..
             remove_indices.append(count - 1)
             continue
         summary_list = article_parse.get_summary(text)
@@ -32,15 +33,15 @@ def summarize_urls(urls):
         summaries.append(summary)
         titles.append(title)
 
-        keywords += article_parse.get_keywords(text)
-
-    keywords = sorted(keywords, key=lambda x: x[1])
-    print keywords[-len(keywords)*int(3/4):]
+        keys = article_parse.get_keywords(text)
+        keys = sorted(keys, key=lambda x: x[1])
+        keywords.append([key[0] for key in keys])
+        #print keywords[-len(keywords)*int(3/4):]
 
     for i in reversed(remove_indices):
         del urls[i]
 
-    return [dict(title=titles[i], url=urls[i], text=summaries[i]) for i in range(len(summaries))]
+    return [dict(title=titles[i], url=urls[i], text=summaries[i], keywords=keywords[i]) for i in range(len(summaries))]
 
 
 def populate_entries():
