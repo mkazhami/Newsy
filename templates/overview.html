@@ -7,10 +7,10 @@
     <div class="columns">
       {% for sportsEntry in sportsEntries %}
       <div class="pin">
-        <a href={{sportsEntry.url}} > 
+        <a href={{sportsEntry.url}} >
           <h4> {{sportsEntry.title}} </h4>
           <h6> Keywords: {{", ".join(sportsEntry.keywords)}} </h6>
-          <!-- <img src="{{sportsEntry.image}}" /> -->
+          <img src="http://i.giphy.com/jSB2l4zJ82Rvq.gif" />
           <p>{{sportsEntry.text}}</p>
         </a>
       </div>
@@ -23,16 +23,16 @@
     <div class="columns">
       {% for businessEntry in businessEntries %}
       <div class="pin">
-        <a href={{businessEntry.url}}> 
+        <a href={{businessEntry.url}}>
           <h4> {{businessEntry.title}} </h4>
           <h6> Keywords: {{", ".join(businessEntry.keywords)}} </h6>
-          <!-- <img src="{{businessEntry.image}}" /> -->
+          <img src="http://i.giphy.com/jSB2l4zJ82Rvq.gif" />
           <p>{{businessEntry.text}}</p>
         </a>
       </div>
       {% endfor %}
     </div>
-  </div>  
+  </div>
 
   <div class="world">
     <h1> World </h1>
@@ -42,9 +42,9 @@
         <a href={{worldEntry.url}}>
           <h4> {{worldEntry.title}} </h4>
           <h6> Keywords: {{", ".join(worldEntry.keywords)}} </h6>
-          <!-- <img src="{{worldEntry.image}}" /> -->
+          <img src="http://i.giphy.com/jSB2l4zJ82Rvq.gif" />
           <p>{{worldEntry.text}}</p>
-        </a>  
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -58,9 +58,9 @@
         <a href= {{entertainmentEntry.url}}>
           <h4> {{entertainmentEntry.title}} </h4>
           <h6> Keywords: {{", ".join(entertainmentEntry.keywords)}} </h6>
-          <!-- <img src="{{entertainmentEntry.image}}" /> -->
+          <img src="http://i.giphy.com/jSB2l4zJ82Rvq.gif" />
           <p>{{entertainmentEntry.text}}</p>
-        </a>  
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -72,17 +72,15 @@
       {% for healthEntry in healthEntries %}
       <div class="pin">
         <a href={{healthEntry.url}}>
-          <h4> {{healthEntry.title}} </h4> 
+          <h4> {{healthEntry.title}} </h4>
           <h6> Keywords: {{", ".join(healthEntry.keywords)}} </h6>
-          <!-- <img src="{{healthEntry.image}}" /> -->
+          <img src="http://i.giphy.com/jSB2l4zJ82Rvq.gif" />
           <p>{{healthEntry.text}}</p>
         </a>
       </div>
       {% endfor %}
     </div>
-  </div>  
+  </div>
 </div>
 
 {% endblock %}
-
-
