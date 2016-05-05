@@ -14,5 +14,5 @@ def getGiphyURLFromKeywords(keywords):
 	resp = requests.get('http://api.giphy.com/v1/gifs/search', params=payload)
 	data = resp.json()['data']
 	if len(data) > 0:
-		return data[0]['embed_url']
-	else return ""
+		return data[0]['images']['fixed_width']['url']
+	return ""
