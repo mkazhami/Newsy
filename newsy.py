@@ -1,4 +1,7 @@
 import os
+import sys
+import logging
+import time
 from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
@@ -12,6 +15,8 @@ import nltk
 nltk.download('punkt')
 
 def summarize_urls(urls):
+    urls = urls[:5]
+    print("summaring urls: " + str(urls))
     summaries = []
     keywords = []
     titles = []
@@ -53,6 +58,7 @@ def summarize_urls(urls):
 
 
 def populate_entries():
+    global entries
     entries = dict()
     entries['world'] = summarize_urls(get_subreddit_links('worldnews', 10)) + summarize_urls(get_subreddit_links('news', 10)) + summarize_urls(get_google_news_article_links('world'))
     entries['sports'] = summarize_urls(get_subreddit_links('sports', 10)) + summarize_urls(get_google_news_article_links('sports'))
@@ -63,27 +69,41 @@ def populate_entries():
     return entries
 
  
-#entries = populate_entries()
+entries = { 'sports': [], 'business': [], 'world': [], 'entertainment': [], 'health': [] } # start with empty dictionary
 #print(str(entries))
 
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
+
 
 
 @app.route('/')
 def show_entries():
-    return render_template('overview.html', sportsEntries=entries['sports'], businessEntries=entries['business'], \
-                                            worldEntries=entries['world'], entertainmentEntries=entries['entertainment'], \
-                                            healthEntries=entries['health'])
+    if len(entries) > 0:
+        return render_template('overview.html', sportsEntries=entries['sports'], businessEntries=entries['business'], \
+                                                worldEntries=entries['world'], entertainmentEntries=entries['entertainment'], \
+                                                healthEntries=entries['health'])
+    else:
+        print("entries are empty")
+        return render_template('overview.html')
 
 
 def refresh_task():
+    global entries
     while True:
-        populate_entries()
-        show_entries()
+        print("populating entries")
+        entries = populate_entries()
+        while len(entries) == 0:
+            print("entries empty - trying again in 5 seconds")
+            time.sleep(5)
+            entries = populate_entries()
+        #app.show_entries()
         time.sleep(60 * 60)
 
 
+t = Thread(target=refresh_task)
+
 if __name__ == '__main__':
-    t = Thread(target=refresh_task)
     t.start()
-    app.run(host='127.0.0.1', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=os.environ.get("PORT", 5000))
