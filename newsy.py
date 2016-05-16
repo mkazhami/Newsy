@@ -63,7 +63,7 @@ def populate_entries():
     return entries
 
  
-entries = populate_entries()
+#entries = populate_entries()
 #print(str(entries))
 
 app = Flask(__name__)
@@ -86,4 +86,4 @@ def refresh_task():
 if __name__ == '__main__':
     t = Thread(target=refresh_task)
     t.start()
-    app.run()
+    app.run(host='127.0.0.1', port=5000)
