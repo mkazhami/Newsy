@@ -82,12 +82,6 @@ def refresh_task():
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     t = Thread(target=refresh_task)
     t.start()
     app.run()
-
-
-=======
-    app.run(debug=True, use_reloader=False)
->>>>>>> 0312801e7276ac9a8e55dd030c555304231f372c
