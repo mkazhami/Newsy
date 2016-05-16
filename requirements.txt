@@ -1,0 +1,8 @@
+BeautifulSoup==3.2.1
+Flask==0.10.1
+goose-extractor==1.0.25
+nltk==3.2
+praw==3.4.0
+requests==2.8.1
+sumy==0.4.1
+topia.termextract==1.1.0
