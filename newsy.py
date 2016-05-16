@@ -8,6 +8,8 @@ from reddit_api import *
 import article_parse
 from threading import Thread
 import giphy_request
+import nltk
+nltk.download('punkt')
 
 def summarize_urls(urls):
     summaries = []
