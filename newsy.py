@@ -6,6 +6,7 @@ from contextlib import closing
 from google_news import *
 from reddit_api import *
 import article_parse
+from threading import Thread
 
 def summarize_urls(urls):
     summaries = []
@@ -13,8 +14,6 @@ def summarize_urls(urls):
     titles = []
     remove_indices = []
     count = 0
-
-    urls = urls[:5]
 
     keywords = []
 
@@ -56,7 +55,7 @@ def populate_entries():
 
  
 entries = populate_entries()
-print(str(entries))
+#print(str(entries))
 
 app = Flask(__name__)
 
@@ -68,6 +67,16 @@ def show_entries():
                                             healthEntries=entries['health'])
 
 
+def refresh_task():
+    while True:
+        populate_entries()
+        show_entries()
+        time.sleep(60 * 60)
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    t = Thread(target=refresh_task)
+    t.start()
+    app.run()
+
+
