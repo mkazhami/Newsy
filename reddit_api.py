@@ -1,6 +1,11 @@
 import praw
 import article_parse
-from secret import reddit_user_agent, reddit_client_id, reddit_client_secret
+#from secret import reddit_user_agent, reddit_client_id, reddit_client_secret
+import os
+
+reddit_user_agent = os.environ["reddit_user_agent"]
+reddit_client_id = os.environ["reddit_client_id"]
+reddit_client_secret = os.environ["reddit_client_secret"]
 
 r = praw.Reddit(user_agent=reddit_user_agent, client_id=reddit_client_id, client_secret=reddit_client_secret)
 

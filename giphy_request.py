@@ -1,6 +1,9 @@
 import requests
 import json
-from secret import giphy_key
+import os
+#from secret import giphy_key
+
+giphy_key = os.environ["giphy_key"]
 
 def getGiphyURLFromKeywords(keywords):
 	if len(keywords) == 0:
