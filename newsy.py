@@ -7,11 +7,14 @@ from google_news import *
 from reddit_api import *
 import article_parse
 from threading import Thread
+import giphy_request
 
 def summarize_urls(urls):
     summaries = []
     keywords = []
     titles = []
+    giphy_urls = []
+
     remove_indices = []
     count = 0
 
@@ -34,13 +37,17 @@ def summarize_urls(urls):
 
         keys = article_parse.get_keywords(text)
         keys = sorted(keys, key=lambda x: x[1])
-        keywords.append([key[0] for key in keys])
+        keys = [key[0] for key in keys]
+        giphy_urls.append(giphy_request.getGiphyURLFromKeywords(keys))
+        keywords.append(keys)
+
+
         #print keywords[-len(keywords)*int(3/4):]
 
     for i in reversed(remove_indices):
         del urls[i]
 
-    return [dict(title=titles[i], url=urls[i], text=summaries[i], keywords=keywords[i]) for i in range(len(summaries))]
+    return [dict(title=titles[i], url=urls[i], text=summaries[i], keywords=keywords[i], giphy=giphy_urls[i]) for i in range(len(summaries))]
 
 
 def populate_entries():
@@ -75,8 +82,12 @@ def refresh_task():
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     t = Thread(target=refresh_task)
     t.start()
     app.run()
 
 
+=======
+    app.run(debug=True, use_reloader=False)
+>>>>>>> 0312801e7276ac9a8e55dd030c555304231f372c
