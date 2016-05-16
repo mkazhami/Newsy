@@ -6,3 +6,4 @@ praw==3.4.0
 requests==2.8.1
 sumy==0.4.1
 topia.termextract==1.1.0
+numpy=1.8.0
