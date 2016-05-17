@@ -1,22 +1,23 @@
-import os
-import sys
-import logging
-import time
+import os, sys, logging, time, threading
 from sqlite3 import dbapi2 as sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from contextlib import closing
 from google_news import *
 from reddit_api import *
-import article_parse
-from threading import Thread
-import giphy_request
+import article_parse, giphy_request
 import nltk
 nltk.download('punkt')
 
+
+entries = { 'sports': [], 'business': [], 'world': [], 'entertainment': [], 'health': [] } # start with empty dictionary
+lock = threading.Lock() # lock for entries dictionary
+
+app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
+
 def summarize_urls(urls):
-    urls = urls[:5]
-    print("summaring urls: " + str(urls))
     summaries = []
     keywords = []
     titles = []
@@ -33,7 +34,7 @@ def summarize_urls(urls):
         if len(text) < 250: # want the article to have substance..
             remove_indices.append(count - 1)
             continue
-        summary_list = article_parse.get_summary(text)
+        summary_list = article_parse.get_summary(text) # returns a list of sentences
 
         summary = ""
         for l in summary_list:
@@ -42,15 +43,18 @@ def summarize_urls(urls):
         summaries.append(summary)
         titles.append(title)
 
+        # get most prominent keywords
         keys = article_parse.get_keywords(text)
         keys = sorted(keys, key=lambda x: x[1])
         keys = [key[0] for key in keys]
+
+        # get most relevant giphy (gif)
+        # not always relevant, but funny when not relevant
         giphy_urls.append(giphy_request.getGiphyURLFromKeywords(keys))
+
         keywords.append(keys)
 
-
-        #print keywords[-len(keywords)*int(3/4):]
-
+    # remove info from bad links
     for i in reversed(remove_indices):
         del urls[i]
 
@@ -59,50 +63,53 @@ def summarize_urls(urls):
 
 def populate_entries():
     global entries
-    entries = dict()
-    entries['world'] = summarize_urls(get_subreddit_links('worldnews', 10)) + summarize_urls(get_subreddit_links('news', 10)) + summarize_urls(get_google_news_article_links('world'))
-    entries['sports'] = summarize_urls(get_subreddit_links('sports', 10)) + summarize_urls(get_google_news_article_links('sports'))
-    entries['health'] = summarize_urls(get_google_news_article_links('health'))
-    entries['business'] = summarize_urls(get_subreddit_links('business', 10)) + summarize_urls(get_subreddit_links('economics', 10)) + summarize_urls(get_google_news_article_links('business'))
-    entries['entertainment'] = summarize_urls(get_google_news_article_links('entertainment'))
+
+    temp = dict()
+    temp['world'] = summarize_urls(get_subreddit_links('worldnews', 10)) + summarize_urls(get_subreddit_links('news', 10)) + summarize_urls(get_google_news_article_links('world'))
+    temp['sports'] = summarize_urls(get_subreddit_links('sports', 10)) + summarize_urls(get_google_news_article_links('sports'))
+    temp['health'] = summarize_urls(get_google_news_article_links('health'))
+    temp['business'] = summarize_urls(get_subreddit_links('business', 10)) + summarize_urls(get_subreddit_links('economics', 10)) + summarize_urls(get_google_news_article_links('business'))
+    temp['entertainment'] = summarize_urls(get_google_news_article_links('entertainment'))
+
+    lock.acquire()
+    entries = temp
+    lock.release()
 
     return entries
-
- 
-entries = { 'sports': [], 'business': [], 'world': [], 'entertainment': [], 'health': [] } # start with empty dictionary
-#print(str(entries))
-
-app = Flask(__name__)
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
 
 
 
 @app.route('/')
 def show_entries():
-    if len(entries) > 0:
-        return render_template('overview.html', sportsEntries=entries['sports'], businessEntries=entries['business'], \
-                                                worldEntries=entries['world'], entertainmentEntries=entries['entertainment'], \
-                                                healthEntries=entries['health'])
+    lock.acquire()
+    isPopulated = True
+    for entry in entries:
+        if len(entry) == 0:
+            isPopulated = False
+            break
+
+    if isPopulated:
+        retval = render_template('overview.html', sportsEntries=entries['sports'], businessEntries=entries['business'], \
+                                                  worldEntries=entries['world'], entertainmentEntries=entries['entertainment'], \
+                                                  healthEntries=entries['health'])
+        lock.release()
+        return retval
     else:
-        print("entries are empty")
+        lock.release()
         return render_template('overview.html')
 
 
 def refresh_task():
     global entries
     while True:
-        print("populating entries")
         entries = populate_entries()
         while len(entries) == 0:
-            print("entries empty - trying again in 5 seconds")
             time.sleep(5)
             entries = populate_entries()
-        #app.show_entries()
         time.sleep(60 * 60)
 
-
-t = Thread(target=refresh_task)
+# run thread in background to update the links every hour
+t = threading.Thread(target=refresh_task)
 
 if __name__ == '__main__':
     t.start()
